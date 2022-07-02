@@ -1,4 +1,4 @@
-// server.js  ?wfEcw5+g%G8
+// server.js
 const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
