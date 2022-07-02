@@ -8,6 +8,8 @@ const hostname = 'localhost'
 const port = process.env.PORT || 3000
 // when using middleware `hostname` and `port` must be provided below
 const app = next({ dev, hostname, port })
+const cors = require('cors');
+
 const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
@@ -40,7 +42,12 @@ app.prepare().then(() => {
 
 https://www.youtube.com/watch?v=lex3qZAf_Ok&t=15s
 
-// "dev": "next dev",
+    "dev": "next dev",
+    "build": "next build && next export",
+    "export": "next export",
+    "start": "next start"
+
+    // "dev": "next dev",
     // "build": "next build",
     // "start": "next start",
     // "lint": "next lint"
