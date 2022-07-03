@@ -1,8 +1,26 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+
+  const [name, setName] = useState()
+
+  useEffect(() => {
+
+    (async () => {
+
+      const response = await fetch('https://nextjs-integrator-v1.vercel.app/api/hello');
+      const res = await response.json();
+      console.log(res);
+      setName(res)
+    })()
+
+
+  }, [])
+
+  console.log(name);
 
   return (
     <div className={styles.container}>

@@ -47,6 +47,8 @@ https://www.youtube.com/watch?v=lex3qZAf_Ok&t=15s
     "export": "next export",
     "start": "next start"
 
+//  "start": "NODE_ENV=production node server.js"
+
     // "dev": "next dev",
     // "build": "next build",
     // "start": "next start",
