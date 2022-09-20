@@ -1,7 +1,16 @@
 // https://towardsdev.com/upload-files-with-nextjs-fetch-api-routes-typescript-8150f9fa2332
 import { promises as fs } from "fs";
+
 import path from "path";
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
 import formidable, { File } from 'formidable';
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+/* Create directory for uploads */
+const targetPath = path.join(process.cwd(), `/uploads/`);
+
 
 
 const allowCors = fn => async (req, res) => {
@@ -29,6 +38,10 @@ export const config = {
 
 const handler = async (req, res) => {
 
+  console.log(__filename);
+  console.log(__dirname);
+  console.log(targetPath);
+
   let status = 200,
     resultBody = {
       status: 'ok',
@@ -37,15 +50,22 @@ const handler = async (req, res) => {
 
   /* Get files using formidable */
   const files = await new Promise((resolve, reject) => {
-    const form = new formidable.IncomingForm();
+    const form = new formidable.IncomingForm({
+      uploadDir: targetPath,
+      keepExtensions: true
+    });
+
+    // form.uploadDir = targetPath//'tmp';
     const files = [];
     form.on('file', function (field, file) {
       files.push([field, file]);
     })
     form.on('end', () => resolve(files));
     form.on('error', err => reject(err));
-    form.parse(req, () => {
-      //
+    form.parse(req, async (err, fields, files) => {
+      console.log('PARSE', fields);
+      console.log('PARSE', files);
+
     });
   }).catch(e => {
     console.log(e);
@@ -58,7 +78,7 @@ const handler = async (req, res) => {
   if (files?.length) {
 
     /* Create directory for uploads */
-    const targetPath = path.join(process.cwd(), `/uploads/`);
+    //  const targetPath = path.join(process.cwd(), `/uploads/`);
     try {
       await fs.access(targetPath);
     } catch (e) {
@@ -78,6 +98,7 @@ const handler = async (req, res) => {
       //   url
       // });
       await fs.rename(tempPath, targetPath + fileName);
+      // fs.renameSync(tempPath, targetPath + fileName);
     }
 
     //// mysql insert
