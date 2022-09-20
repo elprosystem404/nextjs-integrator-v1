@@ -43,45 +43,6 @@ const handler = async (req, res) => {
   console.log('dirname', __dirname);
   console.log('targetPath', targetPath);
 
-  // let status = 200,
-  //   resultBody = {
-  //     status: 'ok',
-  //     message: 'Files were uploaded successfully'
-  //   };
-
-  // const form = new formidable.IncomingForm();
-  // form.multiples = true
-  // form.maxFileSize = 50 * 1024 * 1024
-  // form.uploadDir = targetPath
-  // const _files = [];
-  // form.on('file', function (field, file) {
-  //   _files.push([field, file]);
-
-  // })
-  // // form.on('end', () => resolve(_files));
-  // // form.on('error', err => reject(err));
-
-  // form.parse(req, async (err, fields, files) => {
-
-  //   if (err) {
-  //     console.log('Error', err);
-  //     return res.status(400).json({ status: 'Fail', message: 'Error parssing the files', error: err })
-  //   }
-
-  //   try {
-
-  //     console.log('_FILEs:', files);
-  //     const _f = files.files
-  //     fs.renameSync(_f.filepath, targetPath + _f.originalFilename)
-  //     return res.status(status).json(resultBody);
-  //   } catch (error) {
-  //     console.log('FILE ERROR:', error);
-  //   }
-
-
-  // });
-
-
   let status = 200,
     resultBody = {
       status: 'ok',
@@ -90,10 +51,12 @@ const handler = async (req, res) => {
 
   /* Get files using formidable */
   const files = await new Promise((resolve, reject) => {
-    const form = new formidable.IncomingForm({
-      uploadDir: targetPath,
-      keepExtensions: true
-    });
+    const form = new formidable.IncomingForm(
+      //   {
+      //   uploadDir: targetPath,
+      //   keepExtensions: true
+      // }
+    );
 
     const files = [];
     form.on('file', function (field, file) {
@@ -103,7 +66,7 @@ const handler = async (req, res) => {
     form.on('error', err => reject(err));
 
     form.parse(req, async (err, fields, files) => {
-
+      console.log('parse', { err, fields, files });
     });
   }).catch(e => {
     console.log(e);
@@ -116,7 +79,6 @@ const handler = async (req, res) => {
   if (files?.length) {
 
     /* Create directory for uploads */
-    //  const targetPath = path.join(process.cwd(), `/uploads/`);
     try {
       await fs.access(targetPath);
     } catch (e) {
@@ -129,14 +91,14 @@ const handler = async (req, res) => {
       const fileName = file[1].originalFilename
       const newFilename = file[1].newFilename
       const url = "http://" + req.headers.host;
-      // console.log('xxx', {
-      //   fileName,
-      //   file,
-      //   newFilename,
-      //   url
-      // });
+      console.log('for to :', {
+        tempPath,
+        fileName,
+        file,
+        newFilename,
+        url
+      });
       await fs.rename(tempPath, targetPath + fileName);
-      //  fs.renameSync(tempPath, targetPath + fileName);
     }
 
     //   //   //// mysql insert
