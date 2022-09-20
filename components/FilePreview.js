@@ -4,9 +4,9 @@ import styles from "../styles/FilePreview.module.css";
 
 const FilePreview = ({ fileData }) => {
 
-  console.log('xxx', {
-    fileData
-  });
+  // console.log('xxx', {
+  //   fileData
+  // });
   return (
     <div className={styles.fileList}>
       <div className={styles.fileContainer}>

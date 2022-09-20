@@ -115,6 +115,7 @@ const DropZone = ({ data, dispatch }) => {
 
     //successful file upload
     if (response.ok) {
+
       alert("Files uploaded successfully");
     } else {
       // unsuccessful file upload
