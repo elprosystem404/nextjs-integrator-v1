@@ -99,15 +99,18 @@ const DropZone = ({ data, dispatch }) => {
 
   // to handle file uploads
   const uploadFiles = async () => {
-    // get the files from the fileList as an array
+
+    //  get the files from the fileList as an array
     let files = data.fileList;
     // initialize formData object
     const formData = new FormData();
     // loop over files and add to formData
     files.forEach((file) => formData.append("files", file));
 
-    // Upload the files as a POST request to the server using fetch
-    // Note: /api/fileupload is not a real endpoint, it is just an example
+
+
+    //  Upload the files as a POST request to the server using fetch
+    //  Note: /api/fileupload is not a real endpoint, it is just an example
     const response = await fetch("/api/fileupload", {
       method: "POST",
       body: formData,
